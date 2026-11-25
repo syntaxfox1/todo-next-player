@@ -58,11 +58,11 @@ export function TrackList({
                   src={artistImageUrl}
                   alt={track.artistImageUrl ? track.artist : `${track.album} artwork`}
                   loading="lazy"
-                  className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-[#111] object-cover"
+                  className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-[#111] object-cover brightness-75 saturate-50"
                 />
               ) : (
                 <span
-                  className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#111] bg-gradient-to-br from-[#ffad72] to-[#4f658d] text-[8px] font-bold text-white"
+                  className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#111] bg-[#1a1a1a] text-[8px] font-medium text-white/55"
                   title={track.artist}
                 >
                   {track.artist

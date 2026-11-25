@@ -5,7 +5,15 @@ import type { FormEvent } from "react";
 import { tracks } from "@/data/tracks";
 import { useAudioPlayer } from "@/hooks/use-audio-player";
 import { StaticTrackService } from "@/services/track-service";
-import { DotsIcon, HeartIcon, SearchIcon, SettingsIcon } from "../ui/icons";
+import type { Track } from "@/types/music";
+import {
+  HeartIcon,
+  MoonIcon,
+  MusicNoteIcon,
+  SearchIcon,
+  SettingsIcon,
+} from "../ui/icons";
+import { LyricsPanel } from "./lyrics-panel";
 import { PlayerControls } from "./player-controls";
 import { TrackArt } from "./track-art";
 import { TrackList } from "./track-list";
@@ -21,7 +29,7 @@ const concerts = [
 
 export function PlayerApp() {
   const [query, setQuery] = useState("");
-  const [activeSection, setActiveSection] = useState<"music" | "2026" | "favorites" | "charts" | "concerts" | "subscription">("music");
+  const [activeSection, setActiveSection] = useState<"music" | "lyrics" | "2026" | "favorites" | "charts" | "concerts" | "subscription">("music");
   const [supportOpen, setSupportOpen] = useState(false);
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -120,6 +128,12 @@ export function PlayerApp() {
     void player.selectTrack(tracks[nextIndex]);
   }
 
+  function selectTrack(track: Track) {
+    void player.selectTrack(track);
+    setFavoritesOpen(false);
+    setActiveSection("lyrics");
+  }
+
   function openPayment(title: string, price: string) {
     setPaymentTitle(title);
     setPaymentPrice(price);
@@ -209,16 +223,16 @@ export function PlayerApp() {
         <button
           type="button"
           onClick={() => setActiveSection("music")}
-          className="icon-button h-11 w-11 rounded-2xl bg-white text-sm font-bold text-[#111]"
+          className="icon-button h-11 w-11 rounded-2xl border border-white/[0.08] bg-white/[0.04] text-white/55 hover:bg-white/[0.08] hover:text-white"
           aria-label="NOCTURNE"
         >
-          N
+          <MoonIcon className="h-5 w-5" />
         </button>
 
         <nav className="mt-8 flex flex-1 flex-col items-center gap-3" aria-label="Боковая навигация">
           {([
-            ["music", "Музыка", "M"],
-            ["favorites", "Любимое", "♡"],
+            ["music", "Музыка", ""],
+            ["favorites", "Любимое", ""],
             ["charts", "Топ-чарт", "▲"],
             ["concerts", "Концерты", "◆"],
           ] as const).map(([id, label, symbol]) => (
@@ -233,14 +247,20 @@ export function PlayerApp() {
                 }
               }}
               className={`icon-button relative h-11 w-11 rounded-2xl text-sm ${
-                activeSection === id && id !== "favorites"
-                  ? "bg-white text-[#111]"
+                (activeSection === id || (id === "music" && activeSection === "lyrics")) && id !== "favorites"
+                  ? "bg-white/[0.12] text-white"
                   : "text-white/50 hover:bg-white/[0.08] hover:text-white"
               }`}
               aria-label={label}
               title={label}
             >
-              {symbol}
+              {id === "music" ? (
+                <MusicNoteIcon className="h-5 w-5" />
+              ) : id === "favorites" ? (
+                <HeartIcon className="h-5 w-5" />
+              ) : (
+                symbol
+              )}
               {id === "favorites" && favoriteIds.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#ff7d55] px-1 text-[9px] font-bold text-white">
                   {favoriteIds.length}
@@ -274,11 +294,11 @@ export function PlayerApp() {
         </button>
         <button
           type="button"
-          className="mt-3 h-10 w-10 overflow-hidden rounded-full border border-white/20 bg-gradient-to-br from-[#ffad72] via-[#9b6d71] to-[#4e638a]"
+          className="mt-3 h-10 w-10 overflow-hidden rounded-full border border-white/[0.08] bg-[#171717]"
           aria-label="Аккаунт пользователя"
           title="Аккаунт"
         >
-          <span className="flex h-full items-center justify-center text-xs font-bold">A</span>
+          <span className="flex h-full items-center justify-center bg-[#171717] text-xs font-medium text-white/35">A</span>
         </button>
       </aside>
 
@@ -305,8 +325,8 @@ export function PlayerApp() {
               </button>
             </header>
 
-            <div className="mt-8 grid gap-5 lg:grid-cols-[210px_1fr]">
-              <nav className="flex gap-2 overflow-x-auto lg:flex-col" aria-label="Разделы настроек">
+            <div className="mt-8 grid items-start gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
+              <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-1" aria-label="Разделы настроек">
                 {([
                   ["appearance", "Оформление"],
                   ["audio", "Звук"],
@@ -317,7 +337,7 @@ export function PlayerApp() {
                     key={id}
                     type="button"
                     onClick={() => setSettingsTab(id)}
-                    className={`whitespace-nowrap rounded-xl px-4 py-3 text-left text-sm transition ${
+                    className={`flex min-h-12 w-full items-center rounded-xl px-4 py-3 text-left text-sm transition ${
                       settingsTab === id
                         ? "bg-white text-[#111]"
                         : "border border-white/[0.08] text-white/55 hover:bg-white/[0.06] hover:text-white"
@@ -467,7 +487,7 @@ export function PlayerApp() {
                     <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--app-accent)]">Профиль</p>
                     <h2 className="mt-2 text-2xl font-semibold">Аккаунт NOCTURNE</h2>
                     <div className="mt-6 flex items-center gap-4 rounded-2xl border border-white/[0.08] p-4">
-                      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#ffad72] via-[#9b6d71] to-[#4e638a] text-xl font-bold">A</span>
+                      <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/[0.08] bg-[#171717] text-xl font-medium text-white/35">A</span>
                       <div>
                         <p className="font-semibold">Личный аккаунт</p>
                         <p className="mt-1 text-xs text-white/40">user@nocturne.local</p>
@@ -511,6 +531,7 @@ export function PlayerApp() {
         <nav className="mt-5 flex gap-2 overflow-x-auto pb-1" aria-label="Главное меню">
           {([
             ["music", "Музыка"],
+            ["lyrics", "Текст"],
             ["2026", "2026"],
             ["charts", "Топ-чарт"],
             ["concerts", "Концерты"],
@@ -531,7 +552,7 @@ export function PlayerApp() {
           ))}
         </nav>
 
-        <div className="mt-8 grid items-center gap-8 lg:min-h-[calc(100vh-110px)] lg:grid-cols-[minmax(320px,0.9fr)_1.1fr] lg:gap-14">
+        <div className="mt-5 grid items-start gap-8 lg:grid-cols-[minmax(320px,0.9fr)_1.1fr] lg:gap-10">
           <section className="mx-auto w-full max-w-[440px]">
             <div key={player.track.id} className="fade-track rounded-[36px] border border-white/15 bg-white/[0.07] p-3 shadow-[0_28px_70px_rgba(0,8,28,0.38)] backdrop-blur-sm">
               <TrackArt track={player.track} className="aspect-square w-full rounded-[28px]" />
@@ -570,13 +591,21 @@ export function PlayerApp() {
                     tracks={filteredTracks}
                     activeTrackId={player.track.id}
                     favoriteIds={favoriteIds}
-                    onSelect={(track) => void player.selectTrack(track)}
+                    onSelect={selectTrack}
                     onToggleFavorite={toggleFavorite}
                   />
                 ) : (
                   <p className="mt-10 text-center text-sm text-white/45">Ничего не найдено</p>
                 )}
               </>
+            )}
+
+            {activeSection === "lyrics" && (
+              <LyricsPanel
+                track={player.track}
+                currentTime={player.currentTime}
+                isPlaying={player.isPlaying}
+              />
             )}
 
             {activeSection === "2026" && (
@@ -592,7 +621,7 @@ export function PlayerApp() {
                   tracks={tracks.filter((track) => track.year === 2026)}
                   activeTrackId={player.track.id}
                   favoriteIds={favoriteIds}
-                  onSelect={(track) => void player.selectTrack(track)}
+                  onSelect={selectTrack}
                   onToggleFavorite={toggleFavorite}
                 />
                 <div className="mt-4 grid grid-cols-3 gap-2">
@@ -600,7 +629,7 @@ export function PlayerApp() {
                     <button
                       key={track.id}
                       type="button"
-                      onClick={() => void player.selectTrack(track)}
+                      onClick={() => selectTrack(track)}
                       className="group rounded-2xl border border-white/[0.07] bg-white/[0.025] p-2 text-left transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
                     >
                       {track.artworkUrl ? (
@@ -630,7 +659,7 @@ export function PlayerApp() {
                     tracks={tracks.filter((track) => favoriteIds.includes(track.id))}
                     activeTrackId={player.track.id}
                     favoriteIds={favoriteIds}
-                    onSelect={(track) => void player.selectTrack(track)}
+                    onSelect={selectTrack}
                     onToggleFavorite={toggleFavorite}
                   />
                 ) : (
@@ -662,7 +691,7 @@ export function PlayerApp() {
                     <button
                       key={track.id}
                       type="button"
-                      onClick={() => void player.selectTrack(track)}
+                      onClick={() => selectTrack(track)}
                       className={`group grid w-full grid-cols-[44px_52px_minmax(0,1fr)_48px] items-center gap-3 rounded-[18px] px-3 py-2.5 text-left transition duration-300 ${
                         player.track.id === track.id
                           ? "bg-gradient-to-r from-[#ff9a5b]/20 to-white/[0.07]"
@@ -836,7 +865,7 @@ export function PlayerApp() {
                       tracks={tracks.filter((track) => favoriteIds.includes(track.id))}
                       activeTrackId={player.track.id}
                       favoriteIds={favoriteIds}
-                      onSelect={(track) => void player.selectTrack(track)}
+                      onSelect={selectTrack}
                       onToggleFavorite={toggleFavorite}
                     />
                   </div>

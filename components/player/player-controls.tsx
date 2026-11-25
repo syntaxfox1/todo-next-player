@@ -49,32 +49,8 @@ export function PlayerControls({
         <span>{formatTime(track.duration)}</span>
       </div>
 
-      <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center">
-        <div className="flex items-center gap-2">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            className="h-4 w-4"
-            aria-hidden="true"
-          >
-            <path d="M11 5 6 9H3v6h3l5 4V5Z" />
-            <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-          </svg>
-          <input
-            className="range h-1 w-20"
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={volume}
-            onChange={(event) => onVolumeChange(Number(event.target.value))}
-            aria-label="Громкость"
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
+      <div className="mt-4 flex flex-col items-center gap-3">
+        <div className="flex items-center justify-center gap-4">
           <button type="button" onClick={onPrevious} className="icon-button h-10 w-10 rounded-full text-white/75" aria-label="Предыдущий трек">
             <SkipBackIcon className="h-5 w-5" />
           </button>
@@ -95,7 +71,29 @@ export function PlayerControls({
           </button>
         </div>
 
-        <div />
+        <div className="flex w-full items-center justify-center gap-2 text-white/45">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+            <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+          </svg>
+          <input
+            className="range h-1 w-24"
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={(event) => onVolumeChange(Number(event.target.value))}
+            aria-label="Громкость"
+          />
+        </div>
       </div>
     </div>
   );

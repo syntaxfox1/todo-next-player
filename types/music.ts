@@ -1,3 +1,8 @@
+export type LyricLine = {
+  time: number;
+  text: string;
+};
+
 export type Track = {
   id: string;
   title: string;
@@ -8,6 +13,7 @@ export type Track = {
   year: number;
   artworkUrl?: string;
   artistImageUrl?: string;
+  lyrics?: LyricLine[];
   isPreview?: boolean;
   storeUrl?: string;
   artStart: string;
