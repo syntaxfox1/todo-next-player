@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../asfdfa"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "asfdfa"
+	}
+}
