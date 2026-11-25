@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NOCTURNE — Музыкальный плеер",
-  description: "Современный музыкальный плеер",
+  title: "NOCTURNE — Музыка и кино",
+  description: "Музыка, афиша концертов и будущие премьеры кино",
 };
 
 export default function RootLayout({

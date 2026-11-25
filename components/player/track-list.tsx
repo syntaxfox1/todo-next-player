@@ -32,10 +32,10 @@ export function TrackList({
         return (
           <div
             key={track.id}
-            className={`group grid w-full grid-cols-[28px_48px_1fr_auto_auto] items-center gap-3 rounded-2xl px-3 py-2.5 text-left text-white transition ${
+            className={`group grid w-full grid-cols-[28px_48px_1fr_auto_auto] items-center gap-3 rounded-2xl border px-3 py-2.5 text-left text-white transition ${
               activeTrackId === track.id
-                ? "bg-[#ff9a5b]/20 shadow-[0_10px_28px_rgba(0,8,28,0.18)]"
-                : "hover:bg-white/[0.07]"
+                ? "border-white/20"
+                : "border-transparent hover:border-white/10"
             }`}
           >
             <button
@@ -52,13 +52,13 @@ export function TrackList({
               className="relative h-12 w-12"
               aria-label={`Прослушать ${track.title}`}
             >
-              <TrackArt track={track} className="h-12 w-12 rounded-xl" />
+              <TrackArt track={track} className="h-12 w-12 rounded-xl grayscale" />
               {artistImageUrl ? (
                 <img
                   src={artistImageUrl}
                   alt={track.artistImageUrl ? track.artist : `${track.album} artwork`}
                   loading="lazy"
-                  className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-[#111] object-cover brightness-75 saturate-50"
+                  className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-[#111] object-cover grayscale brightness-75"
                 />
               ) : (
                 <span
@@ -105,7 +105,7 @@ export function TrackList({
               onClick={() => onToggleFavorite(track.id)}
               className={`icon-button h-8 w-8 rounded-full ${
                 favoriteIds.includes(track.id)
-                  ? "text-[#ff8f66]"
+                ? "text-white"
                   : "text-white/35 hover:text-white"
               }`}
               aria-label={

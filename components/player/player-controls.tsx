@@ -57,7 +57,7 @@ export function PlayerControls({
           <button
             type="button"
             onClick={onToggle}
-            className="play-button flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#ffb16f] to-[#ed783f] text-white shadow-[0_12px_35px_rgba(255,125,64,0.28)]"
+            className="play-button flex h-14 w-14 items-center justify-center rounded-full bg-white text-black transition hover:bg-white/85"
             aria-label={isPlaying ? "Пауза" : "Воспроизвести"}
           >
             {isPlaying ? (
