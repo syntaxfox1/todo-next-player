@@ -48,7 +48,7 @@ export function PlayerApp() {
 
   const themeColors = {
     midnight: ["#050b18", "#0d2041", "#1d4f88"],
-    carbon: ["#050505", "#0b0b0c", "#242424"],
+    carbon: ["#000000", "#000000", "#000000"],
     aurora: ["#071b18", "#14322d", "#2d7569"],
     sunset: ["#170b08", "#482016", "#a95b3d"],
     wine: ["#13070d", "#351126", "#814158"],
@@ -204,17 +204,6 @@ export function PlayerApp() {
       }`}
     >
       <div className="ambient-moon" aria-hidden="true" />
-      <div className="ambient-waves" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className="ambient-tiles" aria-hidden="true">
-        <div className="ambient-tiles-grid" />
-      </div>
-      <div className="pointer-events-none absolute -left-28 top-[-7rem] h-[28rem] w-[28rem] rounded-full bg-[#a94d27]/[0.10] blur-[100px]" />
-      <div className="pointer-events-none absolute right-[-10rem] top-[15%] h-[32rem] w-[32rem] rounded-full bg-[#18365e]/[0.12] blur-[110px]" />
-      <div className="pointer-events-none absolute bottom-[-12rem] left-[32%] h-[30rem] w-[30rem] rounded-full bg-[#7e3924]/[0.08] blur-[120px]" />
 
       <aside className="fixed bottom-6 left-6 top-6 z-40 hidden w-[72px] flex-col items-center rounded-[26px] border border-white/[0.08] bg-black/55 py-5 backdrop-blur-xl md:flex">
         <button
@@ -347,7 +336,7 @@ export function PlayerApp() {
                     <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
                       {[
                         ["midnight", "Полночь", "#08172f", "#1d4f88"],
-                        ["carbon", "Карбон", "#050505", "#353535"],
+                        ["carbon", "Чёрный", "#000000", "#000000"],
                         ["aurora", "Аврора", "#071b18", "#2d7569"],
                         ["sunset", "Закат", "#170b08", "#a95b3d"],
                         ["wine", "Бордовый", "#13070d", "#814158"],

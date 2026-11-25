@@ -7,6 +7,9 @@ export type Track = {
   audioUrl: string;
   year: number;
   artworkUrl?: string;
+  artistImageUrl?: string;
+  isPreview?: boolean;
+  storeUrl?: string;
   artStart: string;
   artEnd: string;
 };
